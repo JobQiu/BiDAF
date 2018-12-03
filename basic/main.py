@@ -5,7 +5,8 @@ Created on Sun Dec  2 15:35:00 2018
 
 @author: xavier.qiu
 """
-
+import os
+import shutil
 import tensorflow as tf
 import argparse
 import json
@@ -23,13 +24,32 @@ def main(config):
 
 
 def set_dirs(config):
-    pass
+    
+    assert config.load or config.mode == 'train'
+    if not config.load and os.path.exists(config.out_dir):
+        shutil.rmtree(config.out_dir)
+        
+    config.save_dir = os.path.join(config.out_dir, "save")
+    config.eval_dir = os.path.join(config.out_dir, "eval")
+    config.log_dir = os.path.join(config.out_dir, "log")
+    config.answer_dir = os.path.join(config.out_dir, "answer")
+    
+    makedir_if_not_exist(config.out_dir)
+    makedir_if_not_exist(config.save_dir)
+    makedir_if_not_exist(config.eval_dir)
+    makedir_if_not_exist(config.answer_dir)
+    makedir_if_not_exist(config.log_dir)
+    
+def makedir_if_not_exist(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
 
 def _train(config):
     pass
 
 def _test(config ): 
     pass
+
 def _forward(config ):
     pass
 
