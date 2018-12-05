@@ -18,8 +18,8 @@ def main():
 
 def get_args():
     parser = argparse.ArgumentParser()
-    target_dir = "/content/bi-att-flow/data/squad"
-    glove_dir = "/content/bi-att-flow/data/glove"  # os.path.join(home, "data", "glove")
+    target_dir = "/content/bidaf/data/squad"
+    glove_dir = "/content/bidaf/data/glove"  # os.path.join(home, "data", "glove")
     parser.add_argument('-s', "--source_dir", default=target_dir)
     parser.add_argument('-t', "--target_dir", default=target_dir)
     parser.add_argument('-d', "--debug", action='store_true')
