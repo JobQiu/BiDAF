@@ -1,11 +1,13 @@
 import numpy as np
 import tensorflow as tf
-
+import os
+import shutil
 from basic.read_data import DataSet
 from my.nltk_utils import span_f1
 from my.tensorflow import padded_reshape
 from my.utils import argmax
 from squad.utils_cq import get_phrase, get_best_span
+import json
 
 
 class Evaluation(object):
@@ -268,9 +270,13 @@ class F1Evaluator(LabeledEvaluator):
             [self.global_step, self.yp, self.yp2, self.loss, list(self.tensor_dict.values())], feed_dict=feed_dict)
         y = data_set.data['y']
         ind = 0
+        self.print = True
 
         if self.print:
             for y_t, y1_p, y2_p in zip(y, yp, yp2):
+
+                example = {}
+
                 y1_index = np.argmax(y1_p)
                 y2_index = np.argmax(y2_p)
                 print((str)(y_t) + ", " + (str)(y1_index) + ", " + (str)(y2_index))
@@ -280,6 +286,32 @@ class F1Evaluator(LabeledEvaluator):
                 print(
                     "the pred answer is: {}".format(
                         data_set.data['x'][ind][0][min(y1_index, y2_index):max(y1_index, y2_index) + 1]))
+                attention = vals[7][ind][0]
+                example["attention"] = attention.tolist()
+                example["attention_matrix"] = vals[6][ind][0].tolist()
+                answers = []
+                for y_t_ in y_t:
+                    answers.append(data_set.data['x'][ind][0][y_t_[0][1]:y_t_[1][1]])
+                example["answers"] = answers
+                example["pred"] = data_set.data['x'][ind][0][min(y1_index, y2_index):max(y1_index, y2_index) + 1]
+                context = ""
+                question = ""
+                for word in data_set.data['x'][ind][0]:
+                    context = context + word + " "
+                    pass
+
+                for word in data_set.data['q'][ind]:
+                    question = question + word + " "
+                    pass
+                example["context"] = context
+                example["question"] = question
+                idid = data_set.data['ids'][ind]
+                example["id"] = idid
+                save_dir = "visualize/" + idid
+                if os.path.isdir(save_dir):
+                    shutil.rmtree(save_dir)
+                os.makedirs(save_dir)
+                json.dump(example, open(save_dir + "/data.json", 'w'))
 
                 ind += 1
 

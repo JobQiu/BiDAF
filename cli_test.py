@@ -73,7 +73,7 @@ flags.DEFINE_integer("save_period", 30, "Save Period [1000]")
 flags.DEFINE_integer("max_to_keep", 20, "Max recent saves to keep [20]")
 flags.DEFINE_bool("dump_eval", True, "dump eval? [True]")
 flags.DEFINE_bool("dump_answer", True, "dump answer? [True]")
-flags.DEFINE_bool("vis", False, "output visualization numbers? [False]")
+flags.DEFINE_bool("vis", True, "output visualization numbers? [False]")
 flags.DEFINE_bool("dump_pickle", True, "Dump pickle instead of json? [True]")
 flags.DEFINE_float("decay", 0.9, "Exponential moving average decay for logging values [0.9]")
 

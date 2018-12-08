@@ -5,3 +5,7 @@
 glove.6B.100d.txt
 *.json
 log/*
+visualize/*
+eval/*
+test-0200000/*
+out/basic/00/eval/test-020000/*
